@@ -10,11 +10,12 @@ import android.graphics.Bitmap;
 import android.hardware.Camera;
 import android.hardware.SensorManager;
 import android.opengl.GLES11Ext;
-import android.opengl.GLES20;
+import android.opengl.GLES30;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLUtils;
 import android.os.BatteryManager;
 import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.view.MotionEvent;
@@ -87,38 +88,38 @@ public class ShaderRenderer implements GLSurfaceView.Renderer {
 	public static final String UNIFORM_TOUCH = "touch";
 
 	private static final int[] TEXTURE_UNITS = {
-			GLES20.GL_TEXTURE0,
-			GLES20.GL_TEXTURE1,
-			GLES20.GL_TEXTURE2,
-			GLES20.GL_TEXTURE3,
-			GLES20.GL_TEXTURE4,
-			GLES20.GL_TEXTURE5,
-			GLES20.GL_TEXTURE6,
-			GLES20.GL_TEXTURE7,
-			GLES20.GL_TEXTURE8,
-			GLES20.GL_TEXTURE9,
-			GLES20.GL_TEXTURE10,
-			GLES20.GL_TEXTURE11,
-			GLES20.GL_TEXTURE12,
-			GLES20.GL_TEXTURE13,
-			GLES20.GL_TEXTURE14,
-			GLES20.GL_TEXTURE15,
-			GLES20.GL_TEXTURE16,
-			GLES20.GL_TEXTURE17,
-			GLES20.GL_TEXTURE18,
-			GLES20.GL_TEXTURE19,
-			GLES20.GL_TEXTURE20,
-			GLES20.GL_TEXTURE21,
-			GLES20.GL_TEXTURE22,
-			GLES20.GL_TEXTURE23,
-			GLES20.GL_TEXTURE24,
-			GLES20.GL_TEXTURE25,
-			GLES20.GL_TEXTURE26,
-			GLES20.GL_TEXTURE27,
-			GLES20.GL_TEXTURE28,
-			GLES20.GL_TEXTURE29,
-			GLES20.GL_TEXTURE30,
-			GLES20.GL_TEXTURE31};
+			GLES30.GL_TEXTURE0,
+			GLES30.GL_TEXTURE1,
+			GLES30.GL_TEXTURE2,
+			GLES30.GL_TEXTURE3,
+			GLES30.GL_TEXTURE4,
+			GLES30.GL_TEXTURE5,
+			GLES30.GL_TEXTURE6,
+			GLES30.GL_TEXTURE7,
+			GLES30.GL_TEXTURE8,
+			GLES30.GL_TEXTURE9,
+			GLES30.GL_TEXTURE10,
+			GLES30.GL_TEXTURE11,
+			GLES30.GL_TEXTURE12,
+			GLES30.GL_TEXTURE13,
+			GLES30.GL_TEXTURE14,
+			GLES30.GL_TEXTURE15,
+			GLES30.GL_TEXTURE16,
+			GLES30.GL_TEXTURE17,
+			GLES30.GL_TEXTURE18,
+			GLES30.GL_TEXTURE19,
+			GLES30.GL_TEXTURE20,
+			GLES30.GL_TEXTURE21,
+			GLES30.GL_TEXTURE22,
+			GLES30.GL_TEXTURE23,
+			GLES30.GL_TEXTURE24,
+			GLES30.GL_TEXTURE25,
+			GLES30.GL_TEXTURE26,
+			GLES30.GL_TEXTURE27,
+			GLES30.GL_TEXTURE28,
+			GLES30.GL_TEXTURE29,
+			GLES30.GL_TEXTURE30,
+			GLES30.GL_TEXTURE31};
 	private static final int[] CUBE_MAP_TARGETS = {
 			// all sides of a cube are stored in a single
 			// rectangular source image for compactness:
@@ -318,11 +319,11 @@ public class ShaderRenderer implements GLSurfaceView.Renderer {
 
 	@Override
 	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-		GLES20.glDisable(GLES20.GL_CULL_FACE);
-		GLES20.glDisable(GLES20.GL_BLEND);
-		GLES20.glDisable(GLES20.GL_DEPTH_TEST);
+		GLES30.glDisable(GLES30.GL_CULL_FACE);
+		GLES30.glDisable(GLES30.GL_BLEND);
+		GLES30.glDisable(GLES30.GL_DEPTH_TEST);
 
-		GLES20.glClearColor(0f, 0f, 0f, 1f);
+		GLES30.glClearColor(0f, 0f, 0f, 1f);
 
 		if (surfaceProgram != 0) {
 			// Don't glDeleteProgram(surfaceProgram) because
@@ -377,61 +378,61 @@ public class ShaderRenderer implements GLSurfaceView.Renderer {
 	@Override
 	public void onDrawFrame(GL10 gl) {
 		if (surfaceProgram == 0 || program == 0) {
-			GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT |
-					GLES20.GL_DEPTH_BUFFER_BIT);
+			GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT |
+					GLES30.GL_DEPTH_BUFFER_BIT);
 
 			return;
 		}
 
-		GLES20.glUseProgram(program);
-		GLES20.glVertexAttribPointer(positionLoc, 2, GLES20.GL_BYTE,
+		GLES30.glUseProgram(program);
+		GLES30.glVertexAttribPointer(positionLoc, 2, GLES30.GL_BYTE,
 				false, 0, vertexBuffer);
 
 		final long now = System.nanoTime();
 		float delta = (now - startTime) / NS_PER_SECOND;
 
 		if (timeLoc > -1) {
-			GLES20.glUniform1f(timeLoc, delta);
+			GLES30.glUniform1f(timeLoc, delta);
 		}
 		if (secondLoc > -1) {
-			GLES20.glUniform1i(secondLoc, (int) delta);
+			GLES30.glUniform1i(secondLoc, (int) delta);
 		}
 		if (subSecondLoc > -1) {
-			GLES20.glUniform1f(subSecondLoc, delta - (int) delta);
+			GLES30.glUniform1f(subSecondLoc, delta - (int) delta);
 		}
 		if (frameNumLoc > -1) {
-			GLES20.glUniform1i(frameNumLoc, frameNum);
+			GLES30.glUniform1i(frameNumLoc, frameNum);
 		}
 		if (fTimeLoc > -1) {
-			GLES20.glUniform1f(fTimeLoc,
+			GLES30.glUniform1f(fTimeLoc,
 					((delta % fTimeMax) / fTimeMax * 2f - 1f));
 		}
 		if (resolutionLoc > -1) {
-			GLES20.glUniform2fv(resolutionLoc, 1, resolution, 0);
+			GLES30.glUniform2fv(resolutionLoc, 1, resolution, 0);
 		}
 		if (touchLoc > -1) {
-			GLES20.glUniform2fv(touchLoc, 1, touch, 0);
+			GLES30.glUniform2fv(touchLoc, 1, touch, 0);
 		}
 		if (mouseLoc > -1) {
-			GLES20.glUniform2fv(mouseLoc, 1, mouse, 0);
+			GLES30.glUniform2fv(mouseLoc, 1, mouse, 0);
 		}
 		if (pointerCountLoc > -1) {
-			GLES20.glUniform1i(pointerCountLoc, pointerCount);
+			GLES30.glUniform1i(pointerCountLoc, pointerCount);
 		}
 		if (pointersLoc > -1) {
-			GLES20.glUniform3fv(pointersLoc, pointerCount, pointers, 0);
+			GLES30.glUniform3fv(pointersLoc, pointerCount, pointers, 0);
 		}
 		if (gravityLoc > -1 && gravityValues != null) {
-			GLES20.glUniform3fv(gravityLoc, 1, gravityValues, 0);
+			GLES30.glUniform3fv(gravityLoc, 1, gravityValues, 0);
 		}
 		if (linearLoc > -1 && linearValues != null) {
-			GLES20.glUniform3fv(linearLoc, 1, linearValues, 0);
+			GLES30.glUniform3fv(linearLoc, 1, linearValues, 0);
 		}
 		if (gyroscopeLoc > -1 && gyroscopeListener != null) {
-			GLES20.glUniform3fv(gyroscopeLoc, 1, gyroscopeListener.rotation, 0);
+			GLES30.glUniform3fv(gyroscopeLoc, 1, gyroscopeListener.rotation, 0);
 		}
 		if (magneticLoc > -1 && magneticFieldListener != null) {
-			GLES20.glUniform3fv(magneticLoc, 1, magneticFieldListener.values, 0);
+			GLES30.glUniform3fv(magneticLoc, 1, magneticFieldListener.values, 0);
 		}
 		if ((rotationMatrixLoc > -1 || orientationLoc > -1 ||
 				inclinationMatrixLoc > -1 || inclinationLoc > -1) &&
@@ -439,20 +440,20 @@ public class ShaderRenderer implements GLSurfaceView.Renderer {
 			setRotationMatrix();
 		}
 		if (lightLoc > -1 && lightListener != null) {
-			GLES20.glUniform1f(lightLoc, lightListener.getAmbient());
+			GLES30.glUniform1f(lightLoc, lightListener.getAmbient());
 		}
 		if (pressureLoc > -1 && pressureListener != null) {
-			GLES20.glUniform1f(pressureLoc, pressureListener.getPressure());
+			GLES30.glUniform1f(pressureLoc, pressureListener.getPressure());
 		}
 		if (proximityLoc > -1 && proximityListener != null) {
-			GLES20.glUniform1f(proximityLoc, proximityListener.getCentimeters());
+			GLES30.glUniform1f(proximityLoc, proximityListener.getCentimeters());
 		}
 		if (rotationVectorLoc > -1 && rotationVectorListener != null) {
-			GLES20.glUniform3fv(rotationVectorLoc, 1,
+			GLES30.glUniform3fv(rotationVectorLoc, 1,
 					rotationVectorListener.values, 0);
 		}
 		if (offsetLoc > -1) {
-			GLES20.glUniform2fv(offsetLoc, 1, offset, 0);
+			GLES30.glUniform2fv(offsetLoc, 1, offset, 0);
 		}
 		if (batteryLoc > -1) {
 			if (now - lastBatteryUpdate > BATTERY_UPDATE_INTERVAL) {
@@ -462,7 +463,7 @@ public class ShaderRenderer implements GLSurfaceView.Renderer {
 				batteryLevel = getBatteryLevel();
 				lastBatteryUpdate = now;
 			}
-			GLES20.glUniform1f(batteryLoc, batteryLevel);
+			GLES30.glUniform1f(batteryLoc, batteryLevel);
 		}
 		if (dateTimeLoc > -1) {
 			if (now - lastDateUpdate > DATE_UPDATE_INTERVAL) {
@@ -476,10 +477,10 @@ public class ShaderRenderer implements GLSurfaceView.Renderer {
 
 				lastDateUpdate = now;
 			}
-			GLES20.glUniform4fv(dateTimeLoc, 1, dateTime, 0);
+			GLES30.glUniform4fv(dateTimeLoc, 1, dateTime, 0);
 		}
 		if (startRandomLoc > -1) {
-			GLES20.glUniform1f(startRandomLoc, startRandom);
+			GLES30.glUniform1f(startRandomLoc, startRandom);
 		}
 
 		if (fb[0] == 0) {
@@ -487,21 +488,21 @@ public class ShaderRenderer implements GLSurfaceView.Renderer {
 		}
 
 		// first draw custom shader in framebuffer
-		GLES20.glViewport(0, 0, (int) resolution[0], (int) resolution[1]);
+		GLES30.glViewport(0, 0, (int) resolution[0], (int) resolution[1]);
 
 		textureBinder.reset();
 
 		if (backBufferLoc > -1) {
-			textureBinder.bind(backBufferLoc, GLES20.GL_TEXTURE_2D,
+			textureBinder.bind(backBufferLoc, GLES30.GL_TEXTURE_2D,
 					tx[backTarget]);
 		}
 		if (cameraListener != null) {
 			if (cameraOrientationLoc > -1) {
-				GLES20.glUniformMatrix2fv(cameraOrientationLoc, 1, false,
+				GLES30.glUniformMatrix2fv(cameraOrientationLoc, 1, false,
 						cameraListener.getOrientationMatrix());
 			}
 			if (cameraAddentLoc > -1) {
-				GLES20.glUniform2fv(cameraAddentLoc, 1,
+				GLES30.glUniform2fv(cameraAddentLoc, 1,
 						cameraListener.addent, 0);
 			}
 			cameraListener.update();
@@ -514,26 +515,26 @@ public class ShaderRenderer implements GLSurfaceView.Renderer {
 					textureIds[i]);
 		}
 
-		GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, fb[frontTarget]);
-		GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, 0, 4);
+		GLES30.glBindFramebuffer(GLES30.GL_FRAMEBUFFER, fb[frontTarget]);
+		GLES30.glDrawArrays(GLES30.GL_TRIANGLE_STRIP, 0, 4);
 
 		// then draw framebuffer on screen
-		GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, 0);
-		GLES20.glViewport(0, 0,
+		GLES30.glBindFramebuffer(GLES30.GL_FRAMEBUFFER, 0);
+		GLES30.glViewport(0, 0,
 				(int) surfaceResolution[0],
 				(int) surfaceResolution[1]);
-		GLES20.glUseProgram(surfaceProgram);
-		GLES20.glVertexAttribPointer(surfacePositionLoc, 2, GLES20.GL_BYTE,
+		GLES30.glUseProgram(surfaceProgram);
+		GLES30.glVertexAttribPointer(surfacePositionLoc, 2, GLES30.GL_BYTE,
 				false, 0, vertexBuffer);
 
-		GLES20.glUniform2fv(surfaceResolutionLoc, 1, surfaceResolution, 0);
+		GLES30.glUniform2fv(surfaceResolutionLoc, 1, surfaceResolution, 0);
 
-		GLES20.glUniform1i(surfaceFrameLoc, 0);
-		GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
-		GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, tx[frontTarget]);
+		GLES30.glUniform1i(surfaceFrameLoc, 0);
+		GLES30.glActiveTexture(GLES30.GL_TEXTURE0);
+		GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, tx[frontTarget]);
 
-		GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
-		GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, 0, 4);
+		GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT);
+		GLES30.glDrawArrays(GLES30.GL_TRIANGLE_STRIP, 0, 4);
 
 		// swap buffers so the next image will be rendered
 		// over the current backbuffer and the current image
@@ -679,84 +680,84 @@ public class ShaderRenderer implements GLSurfaceView.Renderer {
 	}
 
 	private void indexLocations() {
-		surfacePositionLoc = GLES20.glGetAttribLocation(
+		surfacePositionLoc = GLES30.glGetAttribLocation(
 				surfaceProgram, "position");
-		surfaceResolutionLoc = GLES20.glGetUniformLocation(
+		surfaceResolutionLoc = GLES30.glGetUniformLocation(
 				surfaceProgram, "resolution");
-		surfaceFrameLoc = GLES20.glGetUniformLocation(
+		surfaceFrameLoc = GLES30.glGetUniformLocation(
 				surfaceProgram, "frame");
 
-		positionLoc = GLES20.glGetAttribLocation(
+		positionLoc = GLES30.glGetAttribLocation(
 				program, UNIFORM_POSITION);
-		timeLoc = GLES20.glGetUniformLocation(
+		timeLoc = GLES30.glGetUniformLocation(
 				program, UNIFORM_TIME);
-		secondLoc = GLES20.glGetUniformLocation(
+		secondLoc = GLES30.glGetUniformLocation(
 				program, UNIFORM_SECOND);
-		subSecondLoc = GLES20.glGetUniformLocation(
+		subSecondLoc = GLES30.glGetUniformLocation(
 				program, UNIFORM_SUB_SECOND);
-		frameNumLoc = GLES20.glGetUniformLocation(
+		frameNumLoc = GLES30.glGetUniformLocation(
 				program, UNIFORM_FRAME_NUMBER);
-		fTimeLoc = GLES20.glGetUniformLocation(
+		fTimeLoc = GLES30.glGetUniformLocation(
 				program, UNIFORM_FTIME);
-		resolutionLoc = GLES20.glGetUniformLocation(
+		resolutionLoc = GLES30.glGetUniformLocation(
 				program, UNIFORM_RESOLUTION);
-		touchLoc = GLES20.glGetUniformLocation(
+		touchLoc = GLES30.glGetUniformLocation(
 				program, UNIFORM_TOUCH);
-		mouseLoc = GLES20.glGetUniformLocation(
+		mouseLoc = GLES30.glGetUniformLocation(
 				program, UNIFORM_MOUSE);
-		pointerCountLoc = GLES20.glGetUniformLocation(
+		pointerCountLoc = GLES30.glGetUniformLocation(
 				program, UNIFORM_POINTER_COUNT);
-		pointersLoc = GLES20.glGetUniformLocation(
+		pointersLoc = GLES30.glGetUniformLocation(
 				program, UNIFORM_POINTERS);
-		gravityLoc = GLES20.glGetUniformLocation(
+		gravityLoc = GLES30.glGetUniformLocation(
 				program, UNIFORM_GRAVITY);
-		gyroscopeLoc = GLES20.glGetUniformLocation(
+		gyroscopeLoc = GLES30.glGetUniformLocation(
 				program, UNIFORM_GYROSCOPE);
-		linearLoc = GLES20.glGetUniformLocation(
+		linearLoc = GLES30.glGetUniformLocation(
 				program, UNIFORM_LINEAR);
-		magneticLoc = GLES20.glGetUniformLocation(
+		magneticLoc = GLES30.glGetUniformLocation(
 				program, UNIFORM_MAGNETIC);
-		rotationMatrixLoc = GLES20.glGetUniformLocation(
+		rotationMatrixLoc = GLES30.glGetUniformLocation(
 				program, UNIFORM_ROTATION_MATRIX);
-		rotationVectorLoc = GLES20.glGetUniformLocation(
+		rotationVectorLoc = GLES30.glGetUniformLocation(
 				program, UNIFORM_ROTATION_VECTOR);
-		orientationLoc = GLES20.glGetUniformLocation(
+		orientationLoc = GLES30.glGetUniformLocation(
 				program, UNIFORM_ORIENTATION);
-		inclinationMatrixLoc = GLES20.glGetUniformLocation(
+		inclinationMatrixLoc = GLES30.glGetUniformLocation(
 				program, UNIFORM_INCLINATION_MATRIX);
-		inclinationLoc = GLES20.glGetUniformLocation(
+		inclinationLoc = GLES30.glGetUniformLocation(
 				program, UNIFORM_INCLINATION);
-		lightLoc = GLES20.glGetUniformLocation(
+		lightLoc = GLES30.glGetUniformLocation(
 				program, UNIFORM_LIGHT);
-		pressureLoc = GLES20.glGetUniformLocation(
+		pressureLoc = GLES30.glGetUniformLocation(
 				program, UNIFORM_PRESSURE);
-		proximityLoc = GLES20.glGetUniformLocation(
+		proximityLoc = GLES30.glGetUniformLocation(
 				program, UNIFORM_PROXIMITY);
-		offsetLoc = GLES20.glGetUniformLocation(
+		offsetLoc = GLES30.glGetUniformLocation(
 				program, UNIFORM_OFFSET);
-		batteryLoc = GLES20.glGetUniformLocation(
+		batteryLoc = GLES30.glGetUniformLocation(
 				program, UNIFORM_BATTERY);
-		dateTimeLoc = GLES20.glGetUniformLocation(
+		dateTimeLoc = GLES30.glGetUniformLocation(
 				program, UNIFORM_DATE);
-		startRandomLoc = GLES20.glGetUniformLocation(
+		startRandomLoc = GLES30.glGetUniformLocation(
 				program, UNIFORM_START_RANDOM);
-		backBufferLoc = GLES20.glGetUniformLocation(
+		backBufferLoc = GLES30.glGetUniformLocation(
 				program, UNIFORM_BACKBUFFER);
-		cameraOrientationLoc = GLES20.glGetUniformLocation(
+		cameraOrientationLoc = GLES30.glGetUniformLocation(
 				program, UNIFORM_CAMERA_ORIENTATION);
-		cameraAddentLoc = GLES20.glGetUniformLocation(
+		cameraAddentLoc = GLES30.glGetUniformLocation(
 				program, UNIFORM_CAMERA_ADDENT);
 
 		for (int i = numberOfTextures; i-- > 0; ) {
-			textureLocs[i] = GLES20.glGetUniformLocation(
+			textureLocs[i] = GLES30.glGetUniformLocation(
 					program,
 					textureNames.get(i));
 		}
 	}
 
 	private void enableAttribArrays() {
-		GLES20.glEnableVertexAttribArray(surfacePositionLoc);
-		GLES20.glEnableVertexAttribArray(positionLoc);
+		GLES30.glEnableVertexAttribArray(surfacePositionLoc);
+		GLES30.glEnableVertexAttribArray(positionLoc);
 	}
 
 	private void registerListeners() {
@@ -866,13 +867,13 @@ public class ShaderRenderer implements GLSurfaceView.Renderer {
 		final int[] bgra = new int[pixels];
 		final IntBuffer colorBuffer = IntBuffer.wrap(rgba);
 
-		GLES20.glReadPixels(
+		GLES30.glReadPixels(
 				0,
 				0,
 				min,
 				min,
-				GLES20.GL_RGBA,
-				GLES20.GL_UNSIGNED_BYTE,
+				GLES30.GL_RGBA,
+				GLES30.GL_UNSIGNED_BYTE,
 				colorBuffer);
 
 		for (int i = 0, e = pixels; i < pixels; ) {
@@ -944,19 +945,19 @@ public class ShaderRenderer implements GLSurfaceView.Renderer {
 					rotationMatrix);
 		}
 		if (rotationMatrixLoc > -1) {
-			GLES20.glUniformMatrix3fv(rotationMatrixLoc, 1, true,
+			GLES30.glUniformMatrix3fv(rotationMatrixLoc, 1, true,
 					rotationMatrix, 0);
 		}
 		if (orientationLoc > -1) {
 			SensorManager.getOrientation(rotationMatrix, orientation);
-			GLES20.glUniform3fv(orientationLoc, 1, orientation, 0);
+			GLES30.glUniform3fv(orientationLoc, 1, orientation, 0);
 		}
 		if (inclinationMatrixLoc > -1 && haveInclination) {
-			GLES20.glUniformMatrix3fv(inclinationMatrixLoc, 1, true,
+			GLES30.glUniformMatrix3fv(inclinationMatrixLoc, 1, true,
 					inclinationMatrix, 0);
 		}
 		if (inclinationLoc > -1 && haveInclination) {
-			GLES20.glUniform1f(inclinationLoc,
+			GLES30.glUniform1f(inclinationLoc,
 					SensorManager.getInclination(inclinationMatrix));
 		}
 	}
@@ -991,8 +992,8 @@ public class ShaderRenderer implements GLSurfaceView.Renderer {
 			return;
 		}
 
-		GLES20.glDeleteFramebuffers(2, fb, 0);
-		GLES20.glDeleteTextures(2, tx, 0);
+		GLES30.glDeleteFramebuffers(2, fb, 0);
+		GLES30.glDeleteTextures(2, tx, 0);
 
 		fb[0] = 0;
 	}
@@ -1000,54 +1001,55 @@ public class ShaderRenderer implements GLSurfaceView.Renderer {
 	private void createTargets(int width, int height) {
 		deleteTargets();
 
-		GLES20.glGenFramebuffers(2, fb, 0);
-		GLES20.glGenTextures(2, tx, 0);
+		GLES30.glGenFramebuffers(2, fb, 0);
+		GLES30.glGenTextures(2, tx, 0);
 
 		createTarget(frontTarget, width, height, backBufferTextureParams);
 		createTarget(backTarget, width, height, backBufferTextureParams);
 
 		// unbind textures that were bound in createTarget()
-		GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);
-		GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, 0);
+		GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, 0);
+		GLES30.glBindFramebuffer(GLES30.GL_FRAMEBUFFER, 0);
 	}
 
+	@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
 	private void createTarget(
 			int idx,
 			int width,
 			int height,
 			BackBufferParameters tp) {
-		GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, tx[idx]);
+		GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, tx[idx]);
 
 		boolean useBitmap = tp.setPresetBitmap(width, height);
 		if (!useBitmap) {
-			GLES20.glTexImage2D(
-					GLES20.GL_TEXTURE_2D,
+			GLES30.glTexImage2D(
+					GLES30.GL_TEXTURE_2D,
 					0,
-					GLES20.GL_RGBA,
+					GLES30.GL_RGBA32F,
 					width,
 					height,
 					0,
-					GLES20.GL_RGBA,
-					GLES20.GL_UNSIGNED_BYTE,
+					GLES30.GL_RGBA,
+					GLES30.GL_FLOAT,
 					null);
 		}
 
-		tp.setParameters(GLES20.GL_TEXTURE_2D);
-		GLES20.glGenerateMipmap(GLES20.GL_TEXTURE_2D);
+		tp.setParameters(GLES30.GL_TEXTURE_2D);
+		GLES30.glGenerateMipmap(GLES30.GL_TEXTURE_2D);
 
-		GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, fb[idx]);
-		GLES20.glFramebufferTexture2D(
-				GLES20.GL_FRAMEBUFFER,
-				GLES20.GL_COLOR_ATTACHMENT0,
-				GLES20.GL_TEXTURE_2D,
+		GLES30.glBindFramebuffer(GLES30.GL_FRAMEBUFFER, fb[idx]);
+		GLES30.glFramebufferTexture2D(
+				GLES30.GL_FRAMEBUFFER,
+				GLES30.GL_COLOR_ATTACHMENT0,
+				GLES30.GL_TEXTURE_2D,
 				tx[idx],
 				0);
 
 		if (!useBitmap) {
 			// clear texture because some drivers
 			// don't initialize texture memory
-			GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT |
-					GLES20.GL_DEPTH_BUFFER_BIT);
+			GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT |
+					GLES30.GL_DEPTH_BUFFER_BIT);
 		}
 	}
 
@@ -1055,12 +1057,12 @@ public class ShaderRenderer implements GLSurfaceView.Renderer {
 		if (textureIds[0] == 1 || numberOfTextures < 1) {
 			return;
 		}
-		GLES20.glDeleteTextures(numberOfTextures, textureIds, 0);
+		GLES30.glDeleteTextures(numberOfTextures, textureIds, 0);
 	}
 
 	private void createTextures() {
 		deleteTextures();
-		GLES20.glGenTextures(numberOfTextures, textureIds, 0);
+		GLES30.glGenTextures(numberOfTextures, textureIds, 0);
 
 		for (int i = 0; i < numberOfTextures; ++i) {
 			String name = textureNames.get(i);
@@ -1080,11 +1082,11 @@ public class ShaderRenderer implements GLSurfaceView.Renderer {
 			switch (textureTargets[i]) {
 				default:
 					continue;
-				case GLES20.GL_TEXTURE_2D:
+				case GLES30.GL_TEXTURE_2D:
 					createTexture(textureIds[i], bitmap,
 							textureParameters.get(i));
 					break;
-				case GLES20.GL_TEXTURE_CUBE_MAP:
+				case GLES30.GL_TEXTURE_CUBE_MAP:
 					createCubeTexture(textureIds[i], bitmap,
 							textureParameters.get(i));
 					break;
@@ -1098,18 +1100,18 @@ public class ShaderRenderer implements GLSurfaceView.Renderer {
 			int id,
 			Bitmap bitmap,
 			TextureParameters tp) {
-		GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, id);
-		tp.setParameters(GLES20.GL_TEXTURE_2D);
+		GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, id);
+		tp.setParameters(GLES30.GL_TEXTURE_2D);
 		TextureParameters.setBitmap(bitmap);
-		GLES20.glGenerateMipmap(GLES20.GL_TEXTURE_2D);
+		GLES30.glGenerateMipmap(GLES30.GL_TEXTURE_2D);
 	}
 
 	private void createCubeTexture(
 			int id,
 			Bitmap bitmap,
 			TextureParameters tp) {
-		GLES20.glBindTexture(GLES20.GL_TEXTURE_CUBE_MAP, id);
-		tp.setParameters(GLES20.GL_TEXTURE_CUBE_MAP);
+		GLES30.glBindTexture(GLES30.GL_TEXTURE_CUBE_MAP, id);
+		tp.setParameters(GLES30.GL_TEXTURE_CUBE_MAP);
 
 		int bitmapWidth = bitmap.getWidth();
 		int bitmapHeight = bitmap.getHeight();
@@ -1134,9 +1136,9 @@ public class ShaderRenderer implements GLSurfaceView.Renderer {
 			GLUtils.texImage2D(
 					target,
 					0,
-					GLES20.GL_RGBA,
+					GLES30.GL_RGBA,
 					side,
-					GLES20.GL_UNSIGNED_BYTE,
+					GLES30.GL_UNSIGNED_BYTE,
 					0);
 
 			side.recycle();
@@ -1147,7 +1149,7 @@ public class ShaderRenderer implements GLSurfaceView.Renderer {
 			}
 		}
 
-		GLES20.glGenerateMipmap(GLES20.GL_TEXTURE_CUBE_MAP);
+		GLES30.glGenerateMipmap(GLES30.GL_TEXTURE_CUBE_MAP);
 	}
 
 	private void unregisterCameraListener() {
@@ -1232,7 +1234,7 @@ public class ShaderRenderer implements GLSurfaceView.Renderer {
 				Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
 			return;
 		}
-		GLES20.glBindTexture(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, id);
+		GLES30.glBindTexture(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, id);
 		tp.setParameters(GLES11Ext.GL_TEXTURE_EXTERNAL_OES);
 	}
 
@@ -1275,10 +1277,10 @@ public class ShaderRenderer implements GLSurfaceView.Renderer {
 			int target;
 			switch (type) {
 				case SAMPLER_2D:
-					target = GLES20.GL_TEXTURE_2D;
+					target = GLES30.GL_TEXTURE_2D;
 					break;
 				case SAMPLER_CUBE:
-					target = GLES20.GL_TEXTURE_CUBE_MAP;
+					target = GLES30.GL_TEXTURE_CUBE_MAP;
 					break;
 				case SAMPLER_EXTERNAL_OES:
 					if (Build.VERSION.SDK_INT >
@@ -1371,9 +1373,9 @@ public class ShaderRenderer implements GLSurfaceView.Renderer {
 			if (loc < 0 || index >= TEXTURE_UNITS.length) {
 				return;
 			}
-			GLES20.glUniform1i(loc, index);
-			GLES20.glActiveTexture(TEXTURE_UNITS[index]);
-			GLES20.glBindTexture(target, textureId);
+			GLES30.glUniform1i(loc, index);
+			GLES30.glActiveTexture(TEXTURE_UNITS[index]);
+			GLES30.glBindTexture(target, textureId);
 			++index;
 		}
 	}
