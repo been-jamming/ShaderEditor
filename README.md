@@ -29,7 +29,7 @@ your Android phone or tablet and use them as live wallpaper.
 * Supports multiple touches
 * Supports multiple render resolutions
 * Previous rendered frame in backbuffer texture
-** This fork is modified so that the backbuffer maintains all of the previous frame's data. There is no clamping when reading from the previous frame, and the value read is the value written last frame.
+	* This fork is modified so that the backbuffer maintains all of the previous frame's data. There is no clamping when reading from the previous frame, and the value read is the value written last frame. This however means that the app only works with Open GL ES 3.0 and above.
 * Import and use arbitrary textures
 * Create and use cube maps
 * Disables rendering when battery is low
